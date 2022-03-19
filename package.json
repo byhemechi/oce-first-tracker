@@ -7,12 +7,14 @@
   "devDependencies": {
     "@types/node": "^17.0.21",
     "@types/sqlite3": "^3.1.8",
+    "prettier": "^2.6.0",
+    "rimraf": "^3.0.2",
     "typescript": "^4.6.2"
   },
   "scripts": {
     "build": "tsc -b",
     "watch": "tsc -b --watch",
     "start": "node ./src",
-    "clean": "tsc -b --clean"
+    "clean": "tsc -b --clean && rimraf data.db"
   }
 }

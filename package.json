@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "axios": "^0.26.1",
+    "discord.js": "^13.6.0",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "@types/sqlite3": "^3.1.8",
+    "typescript": "^4.6.2"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "watch": "tsc -b --watch",
+    "start": "node ./src",
+    "clean": "tsc -b --clean"
+  }
+}

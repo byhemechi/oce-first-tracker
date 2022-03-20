@@ -7,7 +7,7 @@ import sleep from './util/sleep';
 import ms from 'ms';
 
 const checkForNewScores = async (notify = true) => {
-  const leaderboardThreads = 5;
+  const leaderboardThreads = 10;
   let requestsRemaining = Infinity;
   let requestsReset = Date.now();
   const startTime = Date.now();
@@ -22,6 +22,13 @@ const checkForNewScores = async (notify = true) => {
   const statusMessage = await getLogChannel().send(`Checked 0 scores`);
 
   for (let i = 0; i < leaderboards.length; i += leaderboardThreads) {
+    if (i % (leaderboardThreads * 5) === 0)
+      statusMessage.edit(
+        `Checked ${i}/${leaderboards.length} scores, est time ${ms(
+          (Date.now() - startTime) / ((i + 1) / leaderboards.length),
+          { long: true }
+        )}`
+      );
     await Promise.all(
       new Array(Math.min(leaderboardThreads, leaderboards.length - i))
         .fill(undefined)
@@ -42,14 +49,6 @@ const checkForNewScores = async (notify = true) => {
             requestsRemaining = parseInt(headers['x-ratelimit-remaining']);
             requestsReset = parseInt(headers['x-ratelimit-reset']) * 1000;
 
-            statusMessage.edit(
-              `Checked ${i + n}/${
-                leaderboards.length
-              } scores, est time remaining ${ms(
-                (Date.now() - startTime) / ((i + 1) / leaderboards.length),
-                { long: true }
-              )}`
-            );
             if (
               !leaderboard.currentTopScore ||
               scores[0].baseScore > leaderboard.currentTopScore
@@ -57,13 +56,13 @@ const checkForNewScores = async (notify = true) => {
               const timeSet = new Date(scores[0].timeSet);
 
               await sql`
-              UPDATE leaderboards
-              SET
-                currentTopPlayer = ${scores[0].leaderboardPlayerInfo?.id},
-                currentTopScore = ${scores[0].baseScore},
-                scorePP = ${scores[0].pp},
-                timeSet = ${timeSet.getTime()}
-                WHERE leaderboardId = ${leaderboard.id}
+                UPDATE leaderboards
+                SET
+                  currentTopPlayer = ${scores[0].leaderboardPlayerInfo?.id},
+                  currentTopScore = ${scores[0].baseScore},
+                  scorePP = ${scores[0].pp},
+                  timeSet = ${timeSet.getTime()}
+                WHERE leaderboardId = ${leaderboard.leaderboardId}
               `;
               if (leaderboard.currentTopScore || notify) {
                 sendScoreMessage(leaderboard, scores[0]);

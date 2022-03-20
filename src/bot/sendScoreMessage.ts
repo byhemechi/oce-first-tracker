@@ -11,15 +11,19 @@ const sendScoreMessage = async (
   const prevScore = [];
 
   if (leaderboard.currentTopScore && leaderboard.currentTopPlayer) {
+    const { data: player } = await fetcher.get<ScoreSaber.Player>(
+      `/player/${leaderboard.currentTopPlayer}/basic`
+    );
     prevScore.push({
       name: `Previous Score`,
       value: [
-        `**Set By**: ${leaderboard.currentTopPlayer}`,
+        `**Set By**: ${player.name}`,
         `**Accuracy**: ${(
           ((leaderboard.currentTopScore ?? 0) / leaderboard.maxScore) *
           100
-        ).toFixed(2)}`,
+        ).toFixed(2)}%`,
         `**PP**: ${leaderboard?.scorePP}`,
+        `**Date**: ${new Date(leaderboard?.timeSet ?? 0)}`,
       ].join('\n'),
     });
   }

@@ -19,6 +19,7 @@ const checkForNewScores = async (notify = true) => {
   await getLogChannel().send(
     `Checking for new scores using ${leaderboardThreads} threads`
   );
+  const statusMessage = await getLogChannel().send(`Checked 0 scores`);
 
   for (let i = 0; i < leaderboards.length; i += leaderboardThreads) {
     await Promise.all(
@@ -40,20 +41,21 @@ const checkForNewScores = async (notify = true) => {
 
             requestsRemaining = parseInt(headers['x-ratelimit-remaining']);
             requestsReset = parseInt(headers['x-ratelimit-reset']) * 1000;
+
+            statusMessage.edit(
+              `Checked ${i + n}/${
+                leaderboards.length
+              } scores, est time remaining ${ms(
+                (Date.now() - startTime) / ((i + 1) / leaderboards.length),
+                { long: true }
+              )}`
+            );
             if (
               !leaderboard.currentTopScore ||
               scores[0].baseScore > leaderboard.currentTopScore
             ) {
-              console.log(
-                `${n}: ${leaderboard.songAuthorName}-${leaderboard.songName}`
-              );
-
               const timeSet = new Date(scores[0].timeSet);
 
-              console.log({
-                base: scores[0].baseScore,
-                cts: leaderboard.currentTopScore,
-              });
               await sql`
               UPDATE leaderboards
               SET
@@ -79,7 +81,7 @@ const checkForNewScores = async (notify = true) => {
     }
   }
 
-  await getLogChannel().send(
+  statusMessage.edit(
     `Score check complete. Took ${ms(Date.now() - startTime)}`
   );
 };

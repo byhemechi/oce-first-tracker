@@ -1,3 +1,4 @@
+import { time } from 'console';
 import { ColorResolvable, MessageEmbed, MessagePayload } from 'discord.js';
 import fetcher from '../util/fetcher';
 import { getFirstsChannel } from './getChannel';
@@ -14,6 +15,7 @@ const sendScoreMessage = async (
     const { data: player } = await fetcher.get<ScoreSaber.Player>(
       `/player/${leaderboard.currentTopPlayer}/basic`
     );
+    const timeSet = new Date(leaderboard.timeSet ?? 0);
     prevScore.push({
       name: `Previous Score`,
       value: [
@@ -23,7 +25,9 @@ const sendScoreMessage = async (
           100
         ).toFixed(2)}%`,
         `**PP**: ${leaderboard?.scorePP}`,
-        `**Date**: ${new Date(leaderboard?.timeSet ?? 0)}`,
+        `**Time Set**: ${timeSet.toLocaleString('en-AU', {
+          timeZone: 'Australia/Sydney',
+        })} (CBR/SYD/MEL time)`,
       ].join('\n'),
     });
   }

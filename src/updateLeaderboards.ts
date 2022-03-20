@@ -55,7 +55,7 @@ const updateLeaderboards = async () => {
               await sql`SELECT * from leaderboards where leaderboardId = ${leaderboard.id}`;
             if (existing && existing.length > 0) reachedExisting = true;
             sql<LocalData.Leaderboard>`
-              INSERT INTO leaderboards (
+              INSERT OR IGNORE INTO leaderboards (
                 leaderboardId,
                 songName,
                 songAuthorName,

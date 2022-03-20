@@ -4,8 +4,7 @@ import sql from './query';
 const initDatabases = async (): Promise<void> => {
   await sql`
     CREATE TABLE IF NOT EXISTS leaderboards (
-      id INTEGER PRIMARY KEY,
-      leaderboardId BIGINT NOT NULL,
+      leaderboardId BIGINT NOT NULL PRIMARY KEY UNIQUE,
       maxScore BIGINT,
       currentTopScore BIGINT UNSIGNED DEFAULT 0,
       currentTopPlayer VARCHAR,

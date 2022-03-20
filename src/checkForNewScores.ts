@@ -55,7 +55,7 @@ const checkForNewScores = async () => {
               await sql`
               UPDATE leaderboards
               SET
-                currentTopPlayer = ${scores[0].leaderboardPlayerInfo?.name},
+                currentTopPlayer = ${scores[0].leaderboardPlayerInfo?.id},
                 currentTopScore = ${scores[0].baseScore},
                 scorePP = ${scores[0].pp}
                 WHERE id = ${leaderboard.id}

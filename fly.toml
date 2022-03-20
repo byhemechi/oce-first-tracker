@@ -1,0 +1,24 @@
+# fly.toml file generated for oce-first-tracker on 2022-03-19T21:55:05+11:00
+
+app = "oce-first-tracker"
+
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[build]
+builder = "heroku/buildpacks:20"
+
+[env]
+COUNTRIES = "au,nz"
+DB_PATH = '/data/bot.db'
+DISCORD_CHANNEL = "954688887408713788"
+DISCORD_LOG_CHANNEL = "954689012306698290"
+
+[mounts]
+destination = "/data"
+source = "data"
+
+[experimental]
+allowed_public_ports = []
+auto_rollback = true

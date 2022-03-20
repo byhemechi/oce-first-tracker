@@ -1,7 +1,8 @@
 import path from 'path';
+import { Database, sqlite3 } from 'sqlite3';
 
-const sqlite3 = require('sqlite3').verbose();
-
-const db = new sqlite3.Database(path.resolve(__dirname, '../../data.db'));
+const db: Database = new Database(
+  process.env.DB_PATH ?? path.resolve(__dirname, '../../data.db')
+);
 
 export default db;

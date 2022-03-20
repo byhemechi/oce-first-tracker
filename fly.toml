@@ -6,9 +6,6 @@ kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
-[build]
-builder = "heroku/buildpacks:20"
-
 [env]
 COUNTRIES = "au,nz"
 DB_PATH = '/data/bot.db'

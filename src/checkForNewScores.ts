@@ -6,7 +6,7 @@ import fetcher from './util/fetcher';
 import sleep from './util/sleep';
 import ms from 'ms';
 
-const checkForNewScores = async () => {
+const checkForNewScores = async (notify = true) => {
   const leaderboardThreads = 5;
   let requestsRemaining = Infinity;
   let requestsReset = Date.now();
@@ -48,6 +48,8 @@ const checkForNewScores = async () => {
                 `${n}: ${leaderboard.songAuthorName}-${leaderboard.songName}`
               );
 
+              const timeSet = new Date(scores[0].timeSet);
+
               console.log({
                 base: scores[0].baseScore,
                 cts: leaderboard.currentTopScore,
@@ -57,10 +59,13 @@ const checkForNewScores = async () => {
               SET
                 currentTopPlayer = ${scores[0].leaderboardPlayerInfo?.id},
                 currentTopScore = ${scores[0].baseScore},
-                scorePP = ${scores[0].pp}
-                WHERE id = ${leaderboard.id}
+                scorePP = ${scores[0].pp},
+                timeSet = ${timeSet.getTime()}
+                WHERE leaderboardId = ${leaderboard.id}
               `;
-              sendScoreMessage(leaderboard, scores[0]);
+              if (leaderboard.currentTopScore || notify) {
+                sendScoreMessage(leaderboard, scores[0]);
+              }
             }
           })();
         })

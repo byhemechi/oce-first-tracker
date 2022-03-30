@@ -6,17 +6,14 @@ import { TextChannel } from 'discord.js';
 import updateLeaderboards from './updateLeaderboards';
 import checkForNewScores from './checkForNewScores';
 import ms from 'ms';
-import initCli from './cli';
 
 async function main() {
   dotenv.config();
 
   const bot = await launchBot();
-  const cli = initCli();
   process.on('SIGINT', () => {
     console.log('quitting');
     bot.destroy();
-    cli.close();
   });
 
   await initDatabases();

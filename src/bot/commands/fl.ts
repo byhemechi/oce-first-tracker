@@ -23,8 +23,8 @@ const FirstsLeaderboardCommand = async (
     players
       .map(
         (player, rank) =>
-          `${`#${rank + 1}`.padStart(3)} | ${player.playerUsername.padEnd(
-            20
+          `${`#${rank + 1}`.padStart(4)} | ${player.playerUsername.padEnd(
+            35
           )} | ${player.firsts}`
       )
       .join('\n'),

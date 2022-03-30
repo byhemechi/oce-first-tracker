@@ -13,8 +13,7 @@ const launchBot = (): Promise<Client> =>
       resolve(client);
     });
 
-    client.on('interactionCreate', async interaction => {
-
+    client.on('interactionCreate', async (interaction) => {
       if (!interaction.isCommand()) return;
 
       const { commandName } = interaction;
@@ -32,23 +31,32 @@ const launchBot = (): Promise<Client> =>
         ORDER BY firsts DESC;`;
         if (!players) return;
 
-        let message = "```";
+        let message = '```';
         const leaderboardSize = 25;
         for (let i = 0; i < leaderboardSize; i++) {
-          message += "#" + (i + 1).toString().padEnd(2) + " | " + players[i].playerUsername.padEnd(20) + " | " + players[i].firsts + " Firsts\n";
+          message +=
+            '#' +
+            (i + 1).toString().padEnd(2) +
+            ' | ' +
+            players[i].playerUsername.padEnd(20) +
+            ' | ' +
+            players[i].firsts +
+            ' Firsts\n';
         }
-        message += "```";
+        message += '```';
 
         const messageEmbed = new MessageEmbed()
-          .setColor("#ffd900")
-          .setTitle("OCE Firsts Leaderboard")
+          .setColor('#ffd900')
+          .setTitle('OCE Firsts Leaderboard')
           .setDescription(message)
           .setTimestamp()
-          .setThumbnail("https://cdn.discordapp.com/attachments/847053327438184478/958331480646512680/1.png");
+          .setThumbnail(
+            'https://cdn.discordapp.com/attachments/847053327438184478/958331480646512680/1.png'
+          );
         await interaction.reply({ embeds: [messageEmbed] });
       }
     });
-    
+
     console.log('Launching Bot');
     client.login(process.env.DISCORD_TOKEN);
 

@@ -16,7 +16,7 @@ const registerCommands = async () => {
   await rest.put(
     Routes.applicationGuildCommands(
       process.env.DISCORD_ID,
-      process.env.SERVER_ID
+      process.env.DISCORD_SERVER
     ),
     { body: commands }
   );

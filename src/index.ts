@@ -11,7 +11,11 @@ import registerCommands from './bot/registerCommands';
 async function main() {
   dotenv.config();
 
-  await registerCommands();
+  try {
+    await registerCommands();
+  } catch (err) {
+    console.log('Error registering commands');
+  }
   const bot = await launchBot();
   process.on('SIGINT', () => {
     console.log('quitting');

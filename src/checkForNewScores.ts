@@ -55,7 +55,7 @@ const checkForNewScores = async (notify = true) => {
             ) {
               const timeSet = new Date(scores[0].timeSet);
               await sql`
-              INSERT OR IGNORE INTO players (
+              INSERT OR REPLACE INTO players (
                 playerUsername,
                 playerId
               ) VALUES (

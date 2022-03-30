@@ -17,6 +17,12 @@ const initDatabases = async (): Promise<void> => {
       difficulty VARCHAR
     );
   `;
+  await sql`
+  CREATE TABLE IF NOT EXISTS players (
+    playerUsername VARCHAR NOT NULL,
+    playerId VARCHAR NOT NULL UNIQUE
+  );
+`;
   getLogChannel().send('Initialised Databases');
 };
 

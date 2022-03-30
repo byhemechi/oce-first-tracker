@@ -54,7 +54,14 @@ const checkForNewScores = async (notify = true) => {
               scores[0].baseScore > leaderboard.currentTopScore
             ) {
               const timeSet = new Date(scores[0].timeSet);
-
+              await sql`
+              INSERT OR REPLACE INTO players (
+                playerUsername,
+                playerId
+              ) VALUES (
+                ${scores[0].leaderboardPlayerInfo?.name},
+                ${scores[0].leaderboardPlayerInfo?.id}
+              );`;
               await sql`
                 UPDATE leaderboards
                 SET

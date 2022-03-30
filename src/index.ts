@@ -6,10 +6,12 @@ import { TextChannel } from 'discord.js';
 import updateLeaderboards from './updateLeaderboards';
 import checkForNewScores from './checkForNewScores';
 import ms from 'ms';
+import registerCommands from './bot/registerCommands';
 
 async function main() {
   dotenv.config();
 
+  await registerCommands();
   const bot = await launchBot();
   process.on('SIGINT', () => {
     console.log('quitting');
